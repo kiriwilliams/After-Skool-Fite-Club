@@ -20,14 +20,16 @@ function Character(name, minHP, maxHP, minAtk, maxAtk){
     },
     this.attack = function(defender){
         defender.hp = defender.hp - this.atk;
-        this.atk = this.atk * 2;
+        this.atk = this.atk + this.atk;
+        $("#defender").text(defender.hp);
     },
     this.counter = function(player){
         player.hp = player.hp - this.atk;
+        $("#playerHP").text(player.hp);
     }
 }
 //INITIALIZE CHARACTER OBJECTS
-var mark = new Character("Mark",70,300,10,30);
+var mark = new Character("Mark",70,300,100,140);
 var jacoby = new Character("Jacoby",100,300,10,30);
 var whytte = new Character("Whytte",100,300,10,30);
 var lemon = new Character("Lemon",100,300,10,30);
@@ -36,18 +38,15 @@ var lemon = new Character("Lemon",100,300,10,30);
 reset();
 
 //FUNCTIONS
-
-
 //start game
 function reset(){
     mark.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
     lemon.rollStats();
+    $("#mark > .hp").text(mark.hp);
     $(".token").attr({ "data-status": "neutral"}).appendTo($("#character-selection"));
 }
-
-//attack
 
 //Select Fighter
 function selectFighter(character) {

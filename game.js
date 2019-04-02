@@ -51,7 +51,8 @@ reset();
 //FUNCTIONS
 //start game
 function reset(){
-
+    $("#hooligans").hide();
+    $("#arena").hide();
     mark.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
@@ -71,19 +72,19 @@ function reset(){
     $(".token")
         .attr({ "data-status": "neutral"})
         .removeClass("d-none")
-        .removeClass("col-md-5 col-md-12")
+        .removeClass("col-md-5 col-md-12 col-md-4")
         .addClass("col-md-3")
         .appendTo($("#character-selection"));
 }
 
 //Select Fighter
 function selectFighter(character) {
+    $("#arena").show();
     fighterChosen = true; //fighter has been chosen
     var character = $(character); //store the chosen character as player
     character.attr({ "data-status": "player" }); //set the data-status to player
     character.removeClass("col-md-3").addClass("col-md-12");
     character.appendTo($("#player"));//move to the player div
-    character.off("click");
 
     if(character.attr("id") == "mark"){
         player = mark;
@@ -97,8 +98,8 @@ function selectFighter(character) {
     else{
         player = lemon;
     }
-    console.log($("[data-status='neutral']"));
-    $("[data-status='neutral']").appendTo($("#enemies"));//move non-player tokens to defenders
+    $("#hooligans").show();
+    $("[data-status='neutral']").removeClass("col-md-3").addClass("col-md-4").appendTo($("#enemies"));//move non-player tokens to defenders
 }
 
 //Select Defender
@@ -107,6 +108,7 @@ function selectDefender(character) {
     var character = $(character);
     character.attr({ "data-status": "defender" });
     character.removeClass("col-md-3").addClass("col-md-12")
+    $("#enemies").append("<div class='col-md-4'></div>");
     character.appendTo($("#defender"));
     if(character.attr("id") == "mark"){
         defender = mark;

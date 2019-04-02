@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Star Wars</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery.js"></script>
+    </head>
+    <body class="bg-secondary">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Star Wars RPG!</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="character-selection">
+                        <button type="button" class="token btn btn-outline-success" id="mark" data-status="neutral">Mark</button>
+                        <button type="button" class="token btn btn-outline-success" id="jacoby" data-status="neutral">Jacoby</button>
+                        <button type="button" class="token btn btn-outline-success" id="whytte" data-status="neutral">Whytte</button>
+                        <button type="button" class="token btn btn-outline-success" id="lemon" data-status="neutral">Lemon</button>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Your Character</h2>
+                    <span id="player"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="enemies">
+                    <h2>Enemies Available to Attack</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="fight">
+                    <h2>Fight Section</h2>
+                    <button type="button" class="attack btn btn-outline-dark">Attack</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Defender</h2>
+                    <span id="defender"></span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="game.js"></script>
+    </body>
+</html>

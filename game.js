@@ -32,6 +32,12 @@ function Character(name, minHP, maxHP, minAtk, maxAtk){
         var hpDiv = "#"+this.name+"HP";
         $(hpDiv).text(this.hp);
     }
+    this.hide = function(){
+        $("#"+this.name).addClass("d-none")
+    }
+    this.show = function(){
+        $("#"+defender.name).removeClass("d-none")
+    }
 }
 //INITIALIZE CHARACTER OBJECTS
 var mark = new Character("mark",70,300,100,140);
@@ -45,6 +51,7 @@ reset();
 //FUNCTIONS
 //start game
 function reset(){
+
     mark.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
@@ -53,8 +60,21 @@ function reset(){
     jacoby.showHP();
     whytte.showHP();
     lemon.showHP();
-    $("#mark > .hp").text(mark.hp);
-    $(".token").attr({ "data-status": "neutral"}).appendTo($("#character-selection"));
+
+    fighterChosen = false;
+    defenderChosen = false;
+    player = {};
+    defender = {};
+    enemies = 3;
+    
+    console.log()
+    // $("#mark > .hp").text(mark.hp);
+    $(".token")
+        .attr({ "data-status": "neutral"})
+        .removeClass("d-none")
+        .removeClass("col-md-5 col-md-12")
+        .addClass("col-md-3")
+        .appendTo($("#character-selection"));
     
 }
 
@@ -120,11 +140,12 @@ $(".token").on("click", function () {
             defender.counter(player);
             if(defender.hp < 1){
                 enemies --;
-                $("#"+defender.name).addClass("d-none");
+                defender.hide();
                 defenderChosen = false;
                 $(".attack").off("click");
             } 
             if(player.hp < 1){
+                $(".attack").off("click");
                 gameOver();
             }
             if(enemies < 1){
@@ -151,5 +172,6 @@ function gameOver(){
 
     if(confirm(msg+" Play again?")){
         reset();
+        console.log("reset");
     }
 }

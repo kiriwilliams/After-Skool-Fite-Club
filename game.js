@@ -66,16 +66,14 @@ function reset(){
     player = {};
     defender = {};
     enemies = 3;
+    console.log("enemies: "+enemies);
     
-    console.log()
-    // $("#mark > .hp").text(mark.hp);
     $(".token")
         .attr({ "data-status": "neutral"})
         .removeClass("d-none")
         .removeClass("col-md-5 col-md-12")
         .addClass("col-md-3")
         .appendTo($("#character-selection"));
-    
 }
 
 //Select Fighter
@@ -99,7 +97,8 @@ function selectFighter(character) {
     else{
         player = lemon;
     }
-    // $("[data-status='neutral']").appendTo($("#enemies"));//move non-player tokens to defenders
+    console.log($("[data-status='neutral']"));
+    $("[data-status='neutral']").appendTo($("#enemies"));//move non-player tokens to defenders
 }
 
 //Select Defender
@@ -124,6 +123,8 @@ function selectDefender(character) {
 }
 //Add event listener to character tokens
 $(".token").on("click", function () {
+    console.log("fighter: "+fighterChosen);
+    console.log("defender: "+defenderChosen);
     //if no fighter has been chosen
     if (!fighterChosen) {
         selectFighter(this);
@@ -143,13 +144,19 @@ $(".token").on("click", function () {
                 defender.hide();
                 defenderChosen = false;
                 $(".attack").off("click");
+                console.log("enemies: "+enemies);
             } 
             if(player.hp < 1){
                 $(".attack").off("click");
-                gameOver();
+                if(defender.hp < 1){
+                    gameOver("You knocked each other out!")
+                }
+                else{
+                gameOver("You lost.");
+                }
             }
             if(enemies < 1){
-                gameOver();
+                gameOver("You won!");
             }     
         });
     }
@@ -157,21 +164,8 @@ $(".token").on("click", function () {
 
 
 //
-function gameOver(){
-    $(".attack").off("click");
-    var msg = "";
-    if(player.hp < 1 && defender.hp > 0){
-        msg = "You died."
-    }
-    else if (player.hp < 1 && defender.hp < 1){
-        msg = "You knocked each other out!"
-    }
-    else{
-        msg = "You won!"
-    }
-
-    if(confirm(msg+" Play again?")){
+function gameOver(msg){
+        if(confirm(msg+" Play again?")){
         reset();
-        console.log("reset");
     }
 }

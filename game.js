@@ -3,6 +3,7 @@ var fighterChosen = false;
 var defenderChosen = false;
 var player = {};
 var defender = {};
+var enemies = 3;
 
 
 //CHARACTER CONSTRUCTOR
@@ -21,18 +22,22 @@ function Character(name, minHP, maxHP, minAtk, maxAtk){
     this.attack = function(defender){
         defender.hp = defender.hp - this.atk;
         this.atk = this.atk + this.atk;
-        $("#defender").text(defender.hp);
+        $("#"+defender.name+"HP").text(defender.hp);
     },
     this.counter = function(player){
         player.hp = player.hp - this.atk;
-        $("#playerHP").text(player.hp);
+        $("#"+player.name+"HP").text(player.hp);
+    }
+    this.showHP = function(){
+        var hpDiv = "#"+this.name+"HP";
+        $(hpDiv).text(this.hp);
     }
 }
 //INITIALIZE CHARACTER OBJECTS
-var mark = new Character("Mark",70,300,100,140);
-var jacoby = new Character("Jacoby",100,300,10,30);
-var whytte = new Character("Whytte",100,300,10,30);
-var lemon = new Character("Lemon",100,300,10,30);
+var mark = new Character("mark",70,300,100,140);
+var jacoby = new Character("jacoby",100,300,10,30);
+var whytte = new Character("whytte",100,300,10,30);
+var lemon = new Character("lemon",100,300,10,30);
 
 
 reset();
@@ -44,8 +49,13 @@ function reset(){
     jacoby.rollStats();
     whytte.rollStats();
     lemon.rollStats();
+    mark.showHP();
+    jacoby.showHP();
+    whytte.showHP();
+    lemon.showHP();
     $("#mark > .hp").text(mark.hp);
     $(".token").attr({ "data-status": "neutral"}).appendTo($("#character-selection"));
+    
 }
 
 //Select Fighter
@@ -53,6 +63,7 @@ function selectFighter(character) {
     fighterChosen = true; //fighter has been chosen
     var character = $(character); //store the chosen character as player
     character.attr({ "data-status": "player" }); //set the data-status to player
+    character.removeClass("col-md-3").addClass("col-md-12");
     character.appendTo($("#player"));//move to the player div
     character.off("click");
 
@@ -68,7 +79,7 @@ function selectFighter(character) {
     else{
         player = lemon;
     }
-    $("[data-status='neutral']").appendTo($("#enemies"));//move non-player tokens to defenders
+    // $("[data-status='neutral']").appendTo($("#enemies"));//move non-player tokens to defenders
 }
 
 //Select Defender
@@ -76,6 +87,7 @@ function selectDefender(character) {
     defenderChosen = true;
     var character = $(character);
     character.attr({ "data-status": "defender" });
+    character.removeClass("col-md-3").addClass("col-md-12")
     character.appendTo($("#defender"));
     if(character.attr("id") == "mark"){
         defender = mark;
@@ -98,20 +110,46 @@ $(".token").on("click", function () {
     }
     //if fighter has been chosen
     else {
-        if (!defenderChosen) {
+        if(!defenderChosen){
             selectDefender(this);
         }
+    }
+    if(fighterChosen && defenderChosen){
         $(".attack").on("click", function () {
-            console.log(defender.name+"heo"+defender.hp);
             player.attack(defender);
             defender.counter(player);
-                console.log(player.name+" hp: "+player.hp);
-                console.log(player.name+" atk: "+player.atk);
-                console.log(defender.name+" hp: "+defender.hp);
-            if(defender.hp < 0){
-                $("#defender").empty();
+            if(defender.hp < 1){
+                enemies --;
+                $("#"+defender.name).addClass("d-none");
                 defenderChosen = false;
-            }       
+                $(".attack").off("click");
+            } 
+            if(player.hp < 1){
+                gameOver();
+            }
+            if(enemies < 1){
+                gameOver();
+            }     
         });
     }
 });
+
+
+//
+function gameOver(){
+    $(".attack").off("click");
+    var msg = "";
+    if(player.hp < 1 && defender.hp > 0){
+        msg = "You died."
+    }
+    else if (player.hp < 1 && defender.hp < 1){
+        msg = "You knocked each other out!"
+    }
+    else{
+        msg = "You won!"
+    }
+
+    if(confirm(msg+" Play again?")){
+        reset();
+    }
+}

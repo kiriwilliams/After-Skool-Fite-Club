@@ -61,22 +61,24 @@ function reset(){
     defender = {};
     enemies = 3;
 
+    //get new random stats
     kevin.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
     lemon.rollStats();
+    //update the new health for each character
     kevin.showHP();
     jacoby.showHP();
     whytte.showHP();
     lemon.showHP();
 
-
+    
     $(".token")
-    .attr({ "data-status": "neutral"})
-    .removeClass("d-none")
-    .removeClass("col-md-5 col-md-12 col-md-4")
-    .addClass("col-md-3")
-    .appendTo($("#character-selection"));
+    .attr({ "data-status": "neutral"})//remove player/defender identifiers
+    .removeClass("d-none")//show hidden tokens
+    .removeClass("col-md-5 col-md-12 col-md-4")//remove alt columns
+    .addClass("col-md-3")//set 1/4 size columns
+    .appendTo($("#character-selection"));//add back to character selection
 
 
     $("#hooligans").hide();

@@ -55,10 +55,12 @@ reset();
 //start game
 function reset(){
 
-    $("#hooligans").hide();
-    $("#arena").hide();
-    $("#attack").empty();
-    $("#counterattack").empty();
+    fighterChosen = false;
+    defenderChosen = false;
+    player = {};
+    defender = {};
+    enemies = 3;
+
     kevin.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
@@ -68,19 +70,20 @@ function reset(){
     whytte.showHP();
     lemon.showHP();
 
-    fighterChosen = false;
-    defenderChosen = false;
-    player = {};
-    defender = {};
-    enemies = 3;
-    console.log("enemies: "+enemies);
-    
+
     $(".token")
-        .attr({ "data-status": "neutral"})
-        .removeClass("d-none")
-        .removeClass("col-md-5 col-md-12 col-md-4")
-        .addClass("col-md-3")
-        .appendTo($("#character-selection"));
+    .attr({ "data-status": "neutral"})
+    .removeClass("d-none")
+    .removeClass("col-md-5 col-md-12 col-md-4")
+    .addClass("col-md-3")
+    .appendTo($("#character-selection"));
+
+
+    $("#hooligans").hide();
+    $("#arena").hide();
+    $("#attack").empty();
+    $("#counterattack").empty();
+    $("#enemies").empty();
 }
 
 //Select Fighter

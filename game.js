@@ -11,22 +11,25 @@ function Character(name, minHP, maxHP, minAtk, maxAtk){
     this.name = name,
     this.hp = 0,
     this.atk = 0,
+    this.atkMod = 0,
     this.minHP = minHP,
     this.maxHP = maxHP,
     this.minAtk = minAtk,
     this.maxAtk = maxAtk,
     this.rollStats = function(){
         this.hp = Math.floor(Math.random() * (this.maxHP - this.minHP) ) + this.minHP;
-        this.atk = Math.floor(Math.random() * (this.maxAtk - this.minAtk) ) + this.minAtk;
+        this.atkMod = Math.floor(Math.random() * (this.maxAtk - this.minAtk) ) + this.minAtk;
     },
     this.attack = function(defender){
         defender.hp = defender.hp - this.atk;
-        this.atk = this.atk + this.atk;
+        this.atk += this.atkMod;
+        $("#attack").text(this.name+" attacks "+defender.name+" for "+this.atk+" damage.");
         $("#"+defender.name+"HP").text(defender.hp);
     },
     this.counter = function(player){
         player.hp = player.hp - this.atk;
         $("#"+player.name+"HP").text(player.hp);
+        $("#counterattack").text(this.name+" counter attacks "+player.name+" for "+this.atk+" damage.");
     }
     this.showHP = function(){
         var hpDiv = "#"+this.name+"HP";
@@ -40,7 +43,7 @@ function Character(name, minHP, maxHP, minAtk, maxAtk){
     }
 }
 //INITIALIZE CHARACTER OBJECTS
-var mark = new Character("mark",70,300,100,140);
+var kevin = new Character("kevin",70,300,100,140);
 var jacoby = new Character("jacoby",100,300,10,30);
 var whytte = new Character("whytte",100,300,10,30);
 var lemon = new Character("lemon",100,300,10,30);
@@ -51,13 +54,16 @@ reset();
 //FUNCTIONS
 //start game
 function reset(){
+
     $("#hooligans").hide();
     $("#arena").hide();
-    mark.rollStats();
+    $("#attack").empty();
+    $("#counterattack").empty();
+    kevin.rollStats();
     jacoby.rollStats();
     whytte.rollStats();
     lemon.rollStats();
-    mark.showHP();
+    kevin.showHP();
     jacoby.showHP();
     whytte.showHP();
     lemon.showHP();
@@ -86,8 +92,8 @@ function selectFighter(character) {
     character.removeClass("col-md-3").addClass("col-md-12");
     character.appendTo($("#player"));//move to the player div
 
-    if(character.attr("id") == "mark"){
-        player = mark;
+    if(character.attr("id") == "kevin"){
+        player = kevin;
     }
     else if(character.attr("id") =="jacoby"){
         player = jacoby;
@@ -110,8 +116,9 @@ function selectDefender(character) {
     character.removeClass("col-md-3").addClass("col-md-12")
     $("#enemies").append("<div class='col-md-4'></div>");
     character.appendTo($("#defender"));
-    if(character.attr("id") == "mark"){
-        defender = mark;
+
+    if(character.attr("id") == "kevin"){
+        defender = kevin;
     }
     else if(character.attr("id") =="jacoby"){
         defender = jacoby;
@@ -122,6 +129,7 @@ function selectDefender(character) {
     else{
         defender = lemon;
     }
+    defender.atk = defender.atkMod;
 }
 //Add event listener to character tokens
 $(".token").on("click", function () {
@@ -134,6 +142,8 @@ $(".token").on("click", function () {
     //if fighter has been chosen
     else {
         if(!defenderChosen){
+            $("#attack").empty();
+            $("#counterattack").empty();
             selectDefender(this);
         }
     }
@@ -151,14 +161,14 @@ $(".token").on("click", function () {
             if(player.hp < 1){
                 $(".attack").off("click");
                 if(defender.hp < 1){
-                    gameOver("You knocked each other out!")
+                    setTimeout(gameOver("You knocked each other out!"),1000);
                 }
                 else{
-                gameOver("You lost.");
+                setTimeout(gameOver("You lost."),1000);
                 }
             }
             if(enemies < 1){
-                gameOver("You won!");
+                setTimeout(gameOver("You won!"),1000);
             }     
         });
     }
